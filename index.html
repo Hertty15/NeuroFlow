@@ -118,6 +118,14 @@
         <p id="energyStatus" style="color: gray; font-size: 0.9em">Select your energy level above to filter tasks</p>
         <ul id="taskList"></ul>
     </div>
+
+    <!-- Dopamine Menu -->
+     <div class="card">
+        <h3>Dopamine Menu</h3>
+        <p>Need a quick boost? Click the button for a small easy win.</p>
+        <button class="add-btn" onclick="getDopamine()">Give me a boost!</button>
+        <p id="dopamineResult" style="font-weight: bold; color: var(--primary); margin-top: 10px; font-size: 1.2em"></p>
+     </div>
 </div>
 
 <script>
@@ -152,6 +160,20 @@
             li.innerHTML = `<span>${task.text} <small>(${task.energy})</small></span>`;
             list.appendChild(li);
         });
+    }
+
+    // Dopamine Menu Functionality
+    const dopamineActivities = [
+        "Take a 5-minute walk",
+        "Listen to your favorite song",
+        "Drink a glass of water",
+        "Do a quick stretch",
+        "Look out the window and take deep breaths for 2 mins"
+    ];
+
+    function getDopamine() {
+        const randomTask = dopamineActivities[Math.floor(Math.random() * dopamineActivities.length)];
+        document.getElementById('dopamineResult').innerText = dopamineActivities[randomIndex];
     }
 </script>
 

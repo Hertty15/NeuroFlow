@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroFlow - Adaptive Task Manager</title>
+    <style>
+        :root {
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --primary: #6c5ce7;
+            --text: #2d3436;
+            --low-energy: #00b894;
+            --med-energy: #fdcb6e;
+            --high-energy: #e17055;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+
+        .energy-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            color:white;
+            margin: 5px;
+            transition: transform 0.2s;
+        }
+
+        .energy-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .low-energy {
+            background-color: var(--low-energy);
+        }
+
+        .med-energy {
+            background-color: var(--med-energy);
+        }
+
+        .high-energy {
+            background-color: var(--high-energy);
+        }
+
+        input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        button.add-btn {
+            padding: 10px 20px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background: #f9f9f9;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>NeuroFlow</h1>
+    <div class="card">
+        <h2>How much energy do you have?</h2>
+        <button class="energy-btn low-energy" onclick="setEnergyLevel('low')">Low</button>
+        <button class="energy-btn med-energy" onclick="setEnergyLevel('medium')">Medium</button>
+        <button class="energy-btn high-energy" onclick="setEnergyLevel('high')">High</button>
+
+    </div>
+
+    <div class="card">
+        <h3>Your Adaptive List</h3>
+        <p id="energyStatus" style="color: gray; font-size: 0.9em">Select your energy level above to filter tasks</p>
+        <ul id="taskList"></ul>
+    </div>
+</div>
+
+<script>
+    let currentEnergy = null;
+    let tasks = [];
+
+    function setEnergyLevel(level) {
+        currentEnergy = level;
+        document.getElementById('energyStatus').innerText = `Showing tasks for ${level.charAt(0).toUpperCase() + level.slice(1)} energy level`;
+        renderTasks();
+    }
+
+    function addTask() {
+        const input = document.getElementById('taskInput');
+        const tag = document.getElementById('energyTag').value;
+        if (input.value.trim() === '') return;
+        tasks.push({ text: input.value, energy: tag, done: false });
+        input.value = '';
+        renderTasks();
+    }
+
+    function renderTasks() {
+        const list = document.getElementById('taskList');
+        list.innerHTML = '';
+        
+        const filteredTasks = currentEnergy
+            ? tasks.filter(task => task.energy === currentEnergy)
+            : tasks;
+
+        filteredTasks.forEach((task, index) => {
+            const li = document.createElement('li');
+            li.innerHTML = `<span>${task.text} <small>(${task.energy})</small></span>`;
+            list.appendChild(li);
+        });
+    }
+</script>
+
+</body>
+</html>

@@ -177,7 +177,7 @@
 
     function addTask() {
         const input = document.getElementById('taskInput');
-        const tag = document.getElementById('energyTag').value;
+        const tag = document.querySelector('input[name="energyTag"]:checked').value;
         if (input.value.trim() === '') return;
         tasks.push({ text: input.value, energy: tag, done: false });
         input.value = '';

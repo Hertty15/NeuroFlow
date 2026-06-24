@@ -155,6 +155,26 @@
         renderTasks();
     }
 
+    function autoCategorize() {
+        const task = document.getElementById('taskInput').value.toLowerCase();
+        let energy = 'med'; // Default to medium
+
+        //Words that usually indicate low energy
+        const lowenergywords = ['read', 'email', 'reply', 'organise', 'water', 'rest', 'breathe', 'tidy', 'stretch'];
+        //Words that usually indicate high energy
+        const highenergywords = ['run', 'workout', 'exercise', 'clean', 'cook', 'dance', 'lift', 'jog', 'code', 'project', 'study'];
+
+        //Check if the task contains any of the keywords
+        if (lowenergywords.some(word => task.includes(word))) {
+            energy = 'low';
+        } else if (highenergywords.some(word => task.includes(word))) {
+            energy = 'high';
+        }
+        //This line actually clicks the radio button for you
+        document.querySelector(`input[name="energyTag"][value="${energy}"]`).checked = true;
+    }
+
+
     function addTask() {
         const input = document.getElementById('taskInput');
         const tag = document.getElementById('energyTag').value;

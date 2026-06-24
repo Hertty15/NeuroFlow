@@ -119,15 +119,22 @@
         <ul id="taskList"></ul>
     </div>
 
+    <!-- Add Task -->
     <div class="card">
         <h3>Add a Task</h3>
-        <input type="text" id="taskInput" placeholder="Enter your task here...">
-        <select id="energyTag">
-            <option value="low">Low Energy</option>
-            <option value="medium">Medium Energy</option>
-            <option value="high">High Energy</option>
-        </select>
+        <input type="text" id="taskInput" placeholder="e.g., Read a chapter, Go for a run...">
+        <br><br>
+        <button class="add-btn" style="background-color: #fdcb6e; color: black;" onclick="autoCategorize()">✨ AI Categorize</button>
+    
+        <div style="margin-top: 15px;">
+            <p style="margin-bottom: 5px; font-size: 0.9em; color: gray;">Energy Level (AI will guess, or you can choose):</p>
+            <label><input type="radio" name="energyTag" value="low"> Low</label>
+            <label style="margin-left: 10px;"><input type="radio" name="energyTag" value="med" checked> Medium</label>
+            <label style="margin-left: 10px;"><input type="radio" name="energyTag" value="high"> High</label>
+        </div>
+        <br>
         <button class="add-btn" onclick="addTask()">Add Task</button>
+    </div>
 
     <!-- Dopamine Menu -->
      <div class="card">

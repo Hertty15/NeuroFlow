@@ -158,6 +158,8 @@ function setEnergy(level) {
     currentEnergy = level;
     document.getElementById('energyStatus').innerText = `Showing tasks for: ${level.toUpperCase()} energy`;
     renderTasks();
+
+    localStorage.setItem('neuroflow_energy', level);
 }
 
 function addTask() {
@@ -169,6 +171,8 @@ function addTask() {
     tasks.push({ text: input.value, energy: tag, done: false });
     input.value = '';
     renderTasks();
+
+    localStorage.setItem('neuroflow_tasks', JSON.stringify(tasks));
 }
 
 function renderTasks() {
@@ -258,6 +262,21 @@ function startTimer() {
             isRunning = false;
         }
     }, 1000);
+}
+
+//storage
+window.onload=function(){
+    const savedtasks=localStorage.getItem('neuroflow_tasks');
+    if(savedtasks){
+        tasks=JSON.parse(savedtasks);
+        renderTasks();
+    }
+    //also save enrgy levels
+    const savedenergy=localStorage.getItem('neuroflow_energy');
+    if(savedenergy){
+        tasks=JSON.parse(savedenergy);
+        document.getElementById('energystatus').innerText=`Showing tasks for: ${savedenergy.toUpperCase()} energy`;
+    }
 }
 </script>
 

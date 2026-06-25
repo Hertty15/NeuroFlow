@@ -189,8 +189,12 @@ function renderTasks() {
     }
 
     filteredTasks.forEach((task) => {
+        const ogindex=tasks.indexOf(task);
         const li = document.createElement('li');
-        li.innerHTML = `<span>${task.text} <small style="color:gray;">(${task.energy})</small></span>`;
+        li.innerHTML = `
+            <span>${task.text} <small style="color:gray;">(${task.energy})</small></span>
+            <button class="complete-btn" onclick="completetask(${ogindex})">✅Done</button>
+        `;
         list.appendChild(li);
     });
 }
@@ -277,6 +281,12 @@ window.onload=function(){
         tasks=JSON.parse(savedenergy);
         document.getElementById('energystatus').innerText=`Showing tasks for: ${savedenergy.toUpperCase()} energy`;
     }
+}
+
+function completetask(index){
+    tasks.splice(index, 1);
+    localStorage.setItem('neuroflow_tasks', JSON.stringify(tasks));
+    renderTasks();
 }
 </script>
 

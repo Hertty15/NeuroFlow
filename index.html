@@ -99,6 +99,13 @@
             display: flex;
             justify-content: space-between;
         }
+
+        #timerdisplay{
+            font-size: 2.5em;
+            text-align: center;
+            color: var(--primary);
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
@@ -143,6 +150,16 @@
         <button class="add-btn" onclick="getDopamine()">Give me a boost!</button>
         <p id="dopamineResult" style="font-weight: bold; color: var(--primary); margin-top: 10px; font-size: 1.2em"></p>
      </div>
+</div>
+
+<!--timer-->
+<div class="card">
+    <h3>No-Guilt Focusing Timer</h3>
+    <p>Work for some time, then take a break. No pressure.</p>
+    <input type="number" id="timermin" value="15" min="1" max="60" style="width: 50px;"> minutes
+    <button class="addbtn" onclick="starttimer()" id="timerbtn">Start</button>
+    <h2 id="timerdisplay">15:00</h2>
+    <p id="timermsg" style="text-align: center; color: gray; font-style: italic;"></p>
 </div>
 
 <script>
@@ -211,6 +228,39 @@
     function getDopamine() {
         const randomTask = dopamineActivities[Math.floor(Math.random() * dopamineActivities.length)];
         document.getElementById('dopamineResult').innerText = dopamineActivities[randomIndex];
+    }
+
+    //timer ka logic
+    let timerinterval;
+    let running=false;
+
+    function starttimer(){
+        if(running){
+            clearInterval(timerinterval);
+            document.getElementById('timerbtn').innerText="Start";
+            document.getElementById('timermsg').innerText="Timer is paused. Take a break when you want.";
+            running=false;
+            return;
+        }
+        let minutes=parseInt(document.getElementById('timermin').value);
+        let sec=minutes*60;
+        document.getElementById('timerbtn').innerText="Pause";
+        document.getElementById('timermsg').innerText="Focus time!";
+        running=true;
+
+        timerinterval=setInterval(()=>{
+            sec--;
+            let m=Math.floor(sec/60);
+            let s=sec%60;
+            document.getElementById('timerdisplay').innerText=`${m}:${s<10?'0':''}${s}`;
+            if (sec<=0){
+                clearInterval(timerinterval);
+                document.getElementById('timerbtn').innerText="Start";
+                document.getElementById('timermsg').innerText="Awesome job";
+                document.getElementById('timerdisplay').innerText="0:00";
+                running=false;
+            }
+        }, 1000);
     }
 </script>
 

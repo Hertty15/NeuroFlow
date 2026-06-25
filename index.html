@@ -14,70 +14,58 @@
             --med-energy: #fdcb6e;
             --high-energy: #e17055;
         }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
             color: var(--text);
             margin: 0;
-            padding: 0;
+            padding: 20px;
             display: flex;
             justify-content: center;
         }
-
         .container {
-            width: 100%;
             max-width: 600px;
+            width: 100%;
         }
-
-        h1 {
-            text-align: center;
-            color: var(--primary);
+        h1 { 
+            text-align: center; 
+            color: var(--primary); 
         }
-
         .card {
-            background-color: var(--card-bg);
+            background: var(--card-bg);
             border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-            margin-bottom: 20px;
             padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
-
         .energy-btn {
             padding: 10px 20px;
             border: none;
             border-radius: 20px;
             cursor: pointer;
             font-weight: bold;
-            color:white;
+            color: white;
             margin: 5px;
             transition: transform 0.2s;
         }
-
-        .energy-btn:hover {
-            transform: scale(1.05);
+        .energy-btn:hover { 
+            transform: scale(1.05); 
         }
-
-        .low-energy {
-            background-color: var(--low-energy);
-        }
-
-        .med-energy {
-            background-color: var(--med-energy);
-        }
-
-        .high-energy {
-            background-color: var(--high-energy);
-        }
-
-        input[type="text"] {
-            width: 70%;
+        .low { background-color: var(--low-energy); }
+        .med { background-color: var(--med-energy); }
+        .high { background-color: var(--high-energy); }
+        
+        input[type="text"], input[type="number"], select {
             padding: 10px;
             border-radius: 8px;
             border: 1px solid #ddd;
+            margin-right: 5px;
         }
-
-        button.add-btn {
+        input[type="text"] { 
+            width: 60%; 
+        }
+        
+        .add-btn {
             padding: 10px 20px;
             background-color: var(--primary);
             color: white;
@@ -85,12 +73,10 @@
             border-radius: 8px;
             cursor: pointer;
         }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
+        ul { 
+            list-style-type: none; 
+            padding: 0; 
         }
-
         li {
             background: #f9f9f9;
             margin: 5px 0;
@@ -99,40 +85,41 @@
             display: flex;
             justify-content: space-between;
         }
-
-        #timerdisplay{
-            font-size: 2.5em;
-            text-align: center;
-            color: var(--primary);
-            margin: 10px 0;
+        #timerDisplay { 
+            font-size: 2.5em; 
+            text-align: center; 
+            color: var(--primary); 
+            margin: 10px 0; 
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>NeuroFlow</h1>
-    <div class="card">
-        <h2>How much energy do you have?</h2>
-        <button class="energy-btn low-energy" onclick="setEnergyLevel('low')">Low</button>
-        <button class="energy-btn med-energy" onclick="setEnergyLevel('medium')">Medium</button>
-        <button class="energy-btn high-energy" onclick="setEnergyLevel('high')">High</button>
+    <h1>🧠 NeuroFlow</h1>
 
+    <!-- Energy Check In -->
+    <div class="card">
+        <h3>How much energy do you have?</h3>
+        <button class="energy-btn low" onclick="setEnergy('low')">Low 🔋</button>
+        <button class="energy-btn med" onclick="setEnergy('med')">Medium ⚡</button>
+        <button class="energy-btn high" onclick="setEnergy('high')">High 🚀</button>
+        <p id="energyStatus" style="color: gray; font-size: 0.9em; margin-top: 10px;">Select your energy level above to filter tasks</p>
     </div>
 
+    <!-- Task List -->
     <div class="card">
         <h3>Your Adaptive List</h3>
-        <p id="energyStatus" style="color: gray; font-size: 0.9em">Select your energy level above to filter tasks</p>
         <ul id="taskList"></ul>
     </div>
 
-    <!-- Add Task -->
+    <!-- Add a Task -->
     <div class="card">
         <h3>Add a Task</h3>
         <input type="text" id="taskInput" placeholder="e.g., Read a chapter, Go for a run...">
         <br><br>
         <button class="add-btn" style="background-color: #fdcb6e; color: black;" onclick="autoCategorize()">✨ AI Categorize</button>
-    
+        
         <div style="margin-top: 15px;">
             <p style="margin-bottom: 5px; font-size: 0.9em; color: gray;">Energy Level (AI will guess, or you can choose):</p>
             <label><input type="radio" name="energyTag" value="low"> Low</label>
@@ -144,124 +131,134 @@
     </div>
 
     <!-- Dopamine Menu -->
-     <div class="card">
+    <div class="card">
         <h3>Dopamine Menu</h3>
         <p>Need a quick boost? Click the button for a small easy win.</p>
         <button class="add-btn" onclick="getDopamine()">Give me a boost!</button>
-        <p id="dopamineResult" style="font-weight: bold; color: var(--primary); margin-top: 10px; font-size: 1.2em"></p>
-     </div>
-</div>
+        <p id="dopamineResult" style="font-weight: bold; color: var(--primary); margin-top: 10px; font-size: 1.2em;"></p>
+    </div>
 
-<!--timer-->
-<div class="card">
-    <h3>Focusing Timer</h3>
-    <p>Work for some time, then take a break. No pressure.</p>
-    <input type="number" id="timermin" value="15" min="1" max="60" style="width: 50px;"> minutes
-    <button class="addbtn" onclick="starttimer()" id="timerbtn">Start</button>
-    <h2 id="timerdisplay">15:00</h2>
-    <p id="timermsg" style="text-align: center; color: gray; font-style: italic;"></p>
+    <!-- Focusing Timer -->
+    <div class="card">
+        <h3>Focusing Timer</h3>
+        <p>Work for some time, then take a break. No pressure.</p>
+        <input type="number" id="timerMinutes" value="15" min="1" max="60" style="width: 50px;"> minutes
+        <button class="add-btn" onclick="startTimer()" id="timerBtn">Start</button>
+        <h2 id="timerDisplay">15:00</h2>
+        <p id="timerMessage" style="text-align: center; color: gray; font-style: italic;"></p>
+    </div>
 </div>
 
 <script>
-    let currentEnergy = null;
-    let tasks = [];
+// Task Management
+let currentEnergy = null;
+let tasks = [];
 
-    function setEnergyLevel(level) {
-        currentEnergy = level;
-        document.getElementById('energyStatus').innerText = `Showing tasks for ${level.charAt(0).toUpperCase() + level.slice(1)} energy level`;
-        renderTasks();
+function setEnergy(level) {
+    currentEnergy = level;
+    document.getElementById('energyStatus').innerText = `Showing tasks for: ${level.toUpperCase()} energy`;
+    renderTasks();
+}
+
+function addTask() {
+    const input = document.getElementById('taskInput');
+    const tag = document.querySelector('input[name="energyTag"]:checked').value;
+    
+    if (input.value.trim() === '') return;
+    
+    tasks.push({ text: input.value, energy: tag, done: false });
+    input.value = '';
+    renderTasks();
+}
+
+function renderTasks() {
+    const list = document.getElementById('taskList');
+    list.innerHTML = '';
+    
+    const filteredTasks = currentEnergy 
+        ? tasks.filter(t => t.energy === currentEnergy) 
+        : tasks;
+
+    if(filteredTasks.length === 0) {
+        list.innerHTML = '<li style="background:none; text-align:center; color:gray;">No tasks for this energy level. You\'re doing great!</li>';
+        return;
     }
 
-    function autoCategorize() {
-        const task = document.getElementById('taskInput').value.toLowerCase();
-        let energy = 'med'; // Default to medium
+    filteredTasks.forEach((task) => {
+        const li = document.createElement('li');
+        li.innerHTML = `<span>${task.text} <small style="color:gray;">(${task.energy})</small></span>`;
+        list.appendChild(li);
+    });
+}
 
-        //Words that usually indicate low energy
-        const lowenergywords = ['read', 'email', 'reply', 'organise', 'water', 'rest', 'breathe', 'tidy', 'stretch'];
-        //Words that usually indicate high energy
-        const highenergywords = ['run', 'workout', 'exercise', 'clean', 'cook', 'dance', 'lift', 'jog', 'code', 'project', 'study'];
+// AI Auto-Categorize
+function autoCategorize() {
+    const task = document.getElementById('taskInput').value.toLowerCase();
+    let energy = 'med';
 
-        //Check if the task contains any of the keywords
-        if (lowenergywords.some(word => task.includes(word))) {
-            energy = 'low';
-        } else if (highenergywords.some(word => task.includes(word))) {
-            energy = 'high';
+    const lowWords = ['read', 'email', 'reply', 'organize', 'water', 'rest', 'breathe', 'tidy'];
+    const highWords = ['run', 'gym', 'exercise', 'build', 'code', 'clean', 'move', 'workout', 'study'];
+
+    if (lowWords.some(word => task.includes(word))) {
+        energy = 'low';
+    } else if (highWords.some(word => task.includes(word))) {
+        energy = 'high';
+    }
+
+    document.querySelector(`input[name="energyTag"][value="${energy}"]`).checked = true;
+}
+
+// Dopamine Menu
+const dopamineActivities = [
+    "Drink a glass of water! 💧",
+    "Stretch your arms up high! 🙆‍♂️",
+    "Listen to your favorite song! 🎵",
+    "Look out the window for 1 minute! 🪟",
+    "Pet an animal or hug someone! 🐾",
+    "Take 3 deep breaths! 🌬️",
+    "Write down one thing you like about yourself! 💖"
+];
+
+function getDopamine() {
+    const randomIndex = Math.floor(Math.random() * dopamineActivities.length);
+    document.getElementById('dopamineResult').innerText = dopamineActivities[randomIndex];
+}
+
+// Focusing Timer
+let timerInterval;
+let isRunning = false;
+
+function startTimer() {
+    if (isRunning) {
+        clearInterval(timerInterval);
+        document.getElementById('timerBtn').innerText = "Start";
+        document.getElementById('timerMessage').innerText = "Timer paused. Take a break whenever you're ready!";
+        isRunning = false;
+        return;
+    }
+
+    let minutes = parseInt(document.getElementById('timerMinutes').value);
+    let seconds = minutes * 60;
+    
+    document.getElementById('timerBtn').innerText = "Pause";
+    document.getElementById('timerMessage').innerText = "Focus time... no rush!";
+    isRunning = true;
+
+    timerInterval = setInterval(() => {
+        seconds--;
+        let m = Math.floor(seconds / 60);
+        let s = seconds % 60;
+        document.getElementById('timerDisplay').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+
+        if (seconds <= 0) {
+            clearInterval(timerInterval);
+            document.getElementById('timerBtn').innerText = "Start";
+            document.getElementById('timerMessage').innerText = "🎉 Awesome job! You earned a break. Step away and relax!";
+            document.getElementById('timerDisplay').innerText = "0:00";
+            isRunning = false;
         }
-        //This line actually clicks the radio button for you
-        document.querySelector(`input[name="energyTag"][value="${energy}"]`).checked = true;
-    }
-
-
-    function addTask() {
-        const input = document.getElementById('taskInput');
-        const tag = document.querySelector('input[name="energyTag"]:checked').value;
-        if (input.value.trim() === '') return;
-        tasks.push({ text: input.value, energy: tag, done: false });
-        input.value = '';
-        renderTasks();
-    }
-
-    function renderTasks() {
-        const list = document.getElementById('taskList');
-        list.innerHTML = '';
-        
-        const filteredTasks = currentEnergy
-            ? tasks.filter(task => task.energy === currentEnergy)
-            : tasks;
-
-        filteredTasks.forEach((task, index) => {
-            const li = document.createElement('li');
-            li.innerHTML = `<span>${task.text} <small>(${task.energy})</small></span>`;
-            list.appendChild(li);
-        });
-    }
-
-    // Dopamine Menu Functionality
-    const dopamineActivities = [
-        "Take a 5-minute walk",
-        "Listen to your favorite song",
-        "Drink a glass of water",
-        "Do a quick stretch",
-        "Look out the window and take deep breaths for 2 mins"
-    ];
-
-    function getDopamine() {
-        const randomTask = dopamineActivities[Math.floor(Math.random() * dopamineActivities.length)];
-        document.getElementById('dopamineResult').innerText = dopamineActivities[randomIndex];
-    }
-
-    //timer ka logic
-    let timerinterval;
-    let running=false;
-
-    function starttimer(){
-        if(running){
-            clearInterval(timerinterval);
-            document.getElementById('timerbtn').innerText="Start";
-            document.getElementById('timermsg').innerText="Timer is paused. Take a break when you want.";
-            running=false;
-            return;
-        }
-        let minutes=parseInt(document.getElementById('timermin').value);
-        let sec=minutes*60;
-        document.getElementById('timerbtn').innerText="Pause";
-        document.getElementById('timermsg').innerText="Focus time!";
-        running=true;
-
-        timerinterval=setInterval(()=>{
-            sec--;
-            let m=Math.floor(sec/60);
-            let s=sec%60;
-            document.getElementById('timerdisplay').innerText=`${m}:${s<10?'0':''}${s}`;
-            if (sec<=0){
-                clearInterval(timerinterval);
-                document.getElementById('timerbtn').innerText="Start";
-                document.getElementById('timermsg').innerText="Awesome job";
-                document.getElementById('timerdisplay').innerText="0:00";
-                running=false;
-            }
-        }, 1000);
-    }
+    }, 1000);
+}
 </script>
 
 </body>
